@@ -1,5 +1,8 @@
 # zentri-amw106-wireless
 
+## NOTE :
+The wifi-setup banner is unnecessary and to remove it, remove the lines 4-10 from file `auto_connect_netcat.py`.
+
 ## Requirements
 Before running this script, run the following command first in the same directory.
 `pip install -r requirements.txt`
