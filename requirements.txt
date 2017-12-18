@@ -3,3 +3,4 @@ wireless
 termcolor
 colorama
 pyfiglet
+requests
