@@ -50,6 +50,12 @@ def do_web_setup(ip,port,ssid,passkey):
             if timeout_count>=4:
                 print('Something Wrong with the connection. Disconnect the device and try again')
                 exit()
+        except requests.exceptions.ConnectionError:
+            time.sleep(1)
+            timeout_count+=1
+            if timeout_count>=4:
+                print('Something Wrong with the connection. Disconnect the device and try again')
+                exit()
         else:
             data=response.json()
             if data['response']=='Set OK\r\n':
@@ -62,7 +68,10 @@ def do_web_setup(ip,port,ssid,passkey):
             
     while True:
         try:
-            response = requests.get(url+'set wlan.passkey '+passkey,timeout=5)
+            if not passkey:
+                response = requests.get(url+'set wlan.passkey ""'+passkey,timeout=5)
+            else:
+                response = requests.get(url+'set wlan.passkey '+passkey,timeout=5)     
         except requests.exceptions.ConnectTimeout:
             timeout_count+=1
             if timeout_count>=4:

@@ -5,6 +5,7 @@ import socket
 wifilist = []
 wireless=Wireless()
 interface=wireless.interface()
+Zentri_ssid_string='ZentriOS'
 
 def Search():
     cells = wifi.Cell.all(interface)
@@ -106,11 +107,11 @@ def scan_and_connect():
     time.sleep(1)
 
     print('Using interface '+interface)
-    network=FindFromSearchList('ZentriOS')
+    network=FindFromSearchList(Zentri_ssid_string)
     print('\t#'+'Ch. Number'+' \t'+'Wifi Network Name')
     for i in range(0,len(wifilist)):
-        print('\t#'+str(i+1)+' \t\t'+wifilist[i].ssid)
-
+        if Zentri_ssid_string not in wifilist[i].ssid:
+            print('\t#'+str(i+1)+' \t\t'+wifilist[i].ssid)
     print('Wait for Zentri Device to be connected...')
     try:
         wireless.connect(network.ssid,'password')
