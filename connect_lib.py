@@ -136,6 +136,26 @@ def do_remote_terminal_setup(ip,port,ssid,passkey):
         print('Successfully added Wifi-passkey')
     else:
         print('Failed to set Wifi-passkey')
+    nc.write('wlan_scan -v'+'\n')
+    result=nc.read(2048)    
+    seprated_dump=result.split('\r\n')
+    imp_dump=''
+    for i in range(0,len(seprated_dump)):
+        if ssid in seprated_dump[i]:
+            imp_dump=seprated_dump[i]
+            break
+    if not passkey:
+        nc.write('network_verify wifi '+ssid+' '+imp_dump[13:30]+' '+imp_dump[6]+'\n')
+        result=nc.read(1024)
+        print(result)
+        if 'Success' not in result:
+            print('Wrong Network Credentials!...Exiting')
+            nc.close()
+            exit()
+    else:
+        pass
+        #nc.write('network_verify wifi '+ssid+' '+imp_dump[13:30]+' '+imp_dump[6]+' '+imp_dump[37:45]+''++'\n')
+    
     nc.write('save'+'\n')
     result=nc.read(1024)
     if 'Success' in result:
